@@ -15,6 +15,8 @@ return new class extends Migration
     {
         Schema::create('brends', function (Blueprint $table) {
             $table->id();
+            $table->string('photo');
+            $table->string('name')->nullable();
             $table->timestamps();
         });
     }

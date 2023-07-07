@@ -3,6 +3,11 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Category\StoreRequest;
+use App\Http\Requests\Category\UpdateRequest;
+use App\Models\Brend;
+use App\Models\Category;
+use App\Services\CategoryService;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
@@ -14,70 +19,32 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        //
+        $categories = Category::with('brends')->orderBy('id', 'desc')->get();
+        $brends = Brend::orderBy('id', 'desc')->get();
+        return view('dashboard.category.crud', [
+            'categories'=>$categories,
+            'brends'=>$brends,
+        ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function store(StoreRequest $request)
     {
-        //
+        $result = (new CategoryService())->store($request->validated());
+        if($result['status']){
+            return redirect()->route('dashboard.category.index')->with('success', $result['message']);
+        }
+        return redirect()->route('dashboard.category.index')->with('error', $result['message']);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function update(UpdateRequest $request, $id)
     {
-        //
+        $result = (new CategoryService())->update($request->validated(), $id);
+        if($result['status']){
+            return redirect()->route('dashboard.category.index')->with('success', $result['message']);
+        }
+        return redirect()->route('dashboard.category.index')->with('error', $result['message']);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         //

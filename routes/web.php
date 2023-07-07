@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\Dashboard\BrendController;
+use App\Http\Controllers\Dashboard\CategoryController;
+use App\Http\Controllers\Dashboard\SliderController;
 use Illuminate\Support\Facades\Route;
 
 //Localization
@@ -17,9 +20,12 @@ Route::get('/', [\App\Http\Controllers\Front\FrontController::class, 'index'])->
 
 //Dashboard
 Route::group(['prefix' => 'dashboard'], function (){
-    Route::name('dashboard')->group(function (){
+    Route::name('dashboard.')->group(function (){
 
         Route::get('/', [\App\Http\Controllers\Dashboard\DashboardController::class, 'index'])->name('index');
+        Route::resource('/slider', SliderController::class);
+        Route::resource('/brend', BrendController::class);
+        Route::resource('/category', CategoryController::class);
 
     });
 });
