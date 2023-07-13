@@ -7,23 +7,24 @@ use App\Http\Requests\Category\StoreRequest;
 use App\Http\Requests\Category\UpdateRequest;
 use App\Models\Brend;
 use App\Models\Category;
+use App\Models\Product;
 use App\Services\CategoryService;
 use Illuminate\Http\Request;
 
-class CategoryController extends Controller
+class CategoryController extends BaseController
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    private $productController;
+    public function __construct(ProductController $productController)
+    {
+        $this->productController = $productController;
+    }
     public function index()
     {
-        $categories = Category::with('brends')->orderBy('id', 'desc')->get();
-        $brends = Brend::orderBy('id', 'desc')->get();
+        $categories = Category::orderBy('id', 'desc')->get();
+        // $brends = Brend::orderBy('id', 'desc')->get();
         return view('dashboard.category.crud', [
             'categories'=>$categories,
-            'brends'=>$brends,
+            // 'brends'=>$brends,
         ]);
     }
 
@@ -47,6 +48,11 @@ class CategoryController extends Controller
 
     public function destroy($id)
     {
-        //
+        $this->fileDelete('\Category', $id, 'photo');
+        Category::find($id)->delete();
+        foreach (Product::where('category_id', $id)->get() as $prod) {
+            $this->productController->destroy($prod->id);
+        }
+        return back()->with('success', 'Data deleted.');
     }
 }

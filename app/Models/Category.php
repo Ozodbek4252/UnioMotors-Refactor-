@@ -10,7 +10,7 @@ class Category extends Model
     use HasFactory;
 
     protected $fillable = [
-        'brend_id',
+        // 'brend_id',
         'photo',
         'name_uz',
         'name_ru',
@@ -18,10 +18,10 @@ class Category extends Model
         'name_en',
     ];
 
-    public function brends()
-    {
-        return $this->belongsTo(Brend::class, 'brend_id');
-    }
+    // public function brends()
+    // {
+    //     return $this->belongsTo(Brend::class, 'brend_id');
+    // }
 
     public function products()
     {

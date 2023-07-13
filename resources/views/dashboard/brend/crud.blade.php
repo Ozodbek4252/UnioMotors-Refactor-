@@ -42,7 +42,7 @@
                             </div>
                             <div class="col-6">
                                 <div class="mb-3">
-                                    <label class="form-label" for="exampleFormControlInput1">Название RU</label>
+                                    <label class="form-label" for="exampleFormControlInput1">Название</label>
                                     <input class="form-control" id="exampleFormControlInput1" type="text" name="name">
                                 </div>
                             </div>

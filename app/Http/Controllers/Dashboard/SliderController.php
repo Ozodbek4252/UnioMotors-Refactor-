@@ -26,7 +26,7 @@ class SliderController extends BaseController
 
     public function store(SliderRequest $request)
     {
-        $result = (new SliderService())->store($request->validated());
+        $result = (new SliderService())->store($request->validated(), $request->file('photo')->getClientOriginalExtension());
         if($result['status']){
             return redirect()->route('dashboard.slider.index')->with('success', $result['message']);
         }
@@ -35,7 +35,7 @@ class SliderController extends BaseController
 
     public function update(SliderUpdateRequest $request, $id)
     {
-        $result = (new SliderService())->update($request->validated(), $id);
+        $result = (new SliderService())->update($request->validated(), $id, $request->file('photo'));
         if($result['status']){
             return redirect()->route('dashboard.slider.index')->with('success', $result['message']);
         }

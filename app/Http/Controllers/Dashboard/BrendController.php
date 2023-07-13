@@ -6,16 +6,17 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\BrendStoreRequest;
 use App\Http\Requests\BrendUpdateRequest;
 use App\Models\Brend;
+use App\Models\Product;
 use App\Services\BrendService;
 use Illuminate\Http\Request;
 
 class BrendController extends BaseController
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    private $productController;
+    public function __construct(ProductController $productController)
+    {
+        $this->productController = $productController;
+    }
     public function index()
     {
         $brends = Brend::orderBy('id', 'desc')->get();
@@ -46,6 +47,9 @@ class BrendController extends BaseController
     {
         $this->fileDelete('\Brend', $id, 'photo');
         Brend::find($id)->delete();
+        foreach (Product::where('brend_id', $id)->get() as $prod) {
+            $this->productController->destroy($prod->id);
+        }
         return back()->with('success', 'Data deleted.');
     }
 }

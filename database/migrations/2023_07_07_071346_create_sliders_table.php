@@ -23,6 +23,7 @@ return new class extends Migration
             $table->text('discription_ru')->nullable();
             $table->text('discription_en')->nullable();
             $table->string('link')->nullable();
+            $table->string('type');
             $table->timestamps();
         });
     }

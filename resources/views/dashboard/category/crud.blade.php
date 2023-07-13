@@ -30,7 +30,7 @@
                     @csrf
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-6">
+                            <div class="col-12">
                                 <div class="mb-3">
                                     <label class="form-label" for="exampleFormControlInput1">Фото </label>
                                     <div class="col-12 text-center">
@@ -39,14 +39,6 @@
                                     <input class="form-control" id="exampleFormControlInput1" type="file" required
                                         name="photo">
                                 </div>
-                            </div>
-                            <div class="col-6">
-                                <label class="form-label" for="exampleFormControlInput1">Выберите категорию</label>
-                                <select name="brend_id" class="form-control">
-                                    @foreach($brends as $brend)
-                                        <option value="{{ $brend->id }}">{{ $brend->name }}</option>
-                                    @endforeach
-                                </select>
                             </div>
                         </div>
                         <div class="row">
@@ -97,7 +89,6 @@
                                 <th scope="col">#</th>
                                 <th scope="col">Фото</th>
                                 <th scope="col">Название</th>
-                                <th scope="col">Бренды Название</th>
                                 <th scope="col" class="text-center">Действия</th>
                             </tr>
                         </thead>
@@ -108,7 +99,7 @@
                                     <td><img src="{{ $category->photo }}" alt="" style="height: 100px; width: 100px">
                                     </td>
                                     <td>{{ $category->name_ru }}</td>
-                                    <td>{{ $category->brends->name }}</td>
+
                                     <td class="text-center">
                                         <button class="btn btn-xs btn-success" type="button" data-bs-toggle="modal"
                                             data-bs-target="#exampleModalCenter{{ $category->id }}Edit"><i
@@ -128,7 +119,7 @@
                                                             {{ method_field('put') }}
                                                             <div class="card-body">
                                                                 <div class="row">
-                                                                    <div class="col-6">
+                                                                    <div class="col-12">
                                                                         <div class="mb-4">
                                                                             <label class="form-label"
                                                                                 for="exampleFormControlInput1">Фото
@@ -142,15 +133,6 @@
                                                                         <input class="form-control mt-1"
                                                                             id="exampleFormControlInput1" type="file"
                                                                             name="photo">
-                                                                    </div>
-                                                                    <div class="col-6">
-                                                                        <label class="form-label" for="exampleFormControlInput1">Выберите категорию</label>
-                                                                        <i data-feather="loader" style="height: 100px; width: 100px; margin-top: 90px"></i>
-                                                                        <select name="brend_id" class="form-control">
-                                                                            @foreach($brends as $brend)
-                                                                                <option value="{{ $brend->id }}">{{ $brend->name }}</option>
-                                                                            @endforeach
-                                                                        </select>
                                                                     </div>
                                                                 </div>
 

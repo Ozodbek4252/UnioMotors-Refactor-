@@ -5,6 +5,7 @@
     @include('components.dashboard.meta')
     <title>Dashboard</title>
     @include('components.dashboard.styles')
+    @livewireStyles
     @yield('styles')
 </head>
 
@@ -35,6 +36,7 @@
             @include('components.dashboard.footer')
         </div>
     </div>
+    @livewireScripts
     @include('components.dashboard.scripts')
     @yield('scripts')
 </body>

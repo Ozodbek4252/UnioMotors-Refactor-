@@ -24,7 +24,7 @@ class SliderUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'photo' => 'image|mimes:jpeg,png,jpg,gif|max:20480',
+            'photo' => 'mimes:jpeg,png,jpg,gif,mp4,avi,mov,wmv|max:20480',
             'link' => 'string|max:255',
             'name_uz' => 'required|string|max:255',
             'name_ru' => 'required|string|max:255',
