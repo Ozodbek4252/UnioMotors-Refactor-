@@ -18,6 +18,7 @@ return new class extends Migration
             $table->integer('brend_id')->nullable();
             $table->integer('category_id')->nullable();
             $table->string('photos');
+            $table->string('icon')->nullable();
             $table->string('name');
             $table->string('engine')->nullable();
             $table->string('capacity_uz')->nullable();

@@ -26,6 +26,7 @@ class UpdateRequest extends FormRequest
         return [
             'photos' => 'array',
             'photos.*' => 'image|mimes:jpeg,png,jpg,gif|max:20480',
+            'icon' => 'image|mimes:jpeg,png,jpg,gif|max:20480',
             'brend_id' => 'integer|max:255',
             'category_id' => 'integer|string|max:255',
             'name' => 'required|string|max:255',

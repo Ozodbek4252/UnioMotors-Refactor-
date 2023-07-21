@@ -154,6 +154,16 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="mb-3">
+                                    <label class="form-label" for="exampleFormControlInput1">Иконки</label>
+                                    {{-- <img class="mb-3" src="/issets/size.png" alt="" style="height: 84px; width: 150px"> --}}
+                                    <input class="form-control" id="exampleFormControlInput1" type="file" name="icon"
+                                        multiple>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="card-footer text-end">
                         <button class="btn btn-primary" type="submit">Сохранить</button>

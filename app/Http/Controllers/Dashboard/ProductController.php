@@ -92,6 +92,7 @@ class ProductController extends BaseController
         foreach ($product->photos as $photo) {
             $this->fileDelete(null, null, $photo);
         }
+        $this->fileDelete('\Product', $id, 'icon');
         $product->delete();
 
         return back()->with('success', 'Data deleted.');

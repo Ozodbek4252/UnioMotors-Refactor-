@@ -6,6 +6,7 @@ use App\Http\Controllers\Dashboard\BrendController;
 use App\Http\Controllers\Dashboard\CategoryController;
 use App\Http\Controllers\Dashboard\CharactricController;
 use App\Http\Controllers\Dashboard\DataController;
+use App\Http\Controllers\Dashboard\FeedbackController;
 use App\Http\Controllers\Dashboard\HomeSelectControll;
 use App\Http\Controllers\Dashboard\ProductController;
 use App\Http\Controllers\Dashboard\SixStepController;
@@ -49,6 +50,7 @@ Route::group(['prefix' => 'dashboard'], function () {
         Route::resource('/aboutdiscription', AboutDiscriptionController::class);
         Route::resource('/about', AboutController::class);
         Route::resource('/homeselect', HomeSelectControll::class);
+        Route::resource('/feedback', FeedbackController::class);
         Route::get('/charactric/{product_id}/index', [CharactricController::class, 'index'])->name('charactric.index');
         Route::post('/charactric/store', [CharactricController::class, 'store'])->name('charactric.store');
         Route::put('/charactric/{id}/update', [CharactricController::class, 'update'])->name('charactric.update');

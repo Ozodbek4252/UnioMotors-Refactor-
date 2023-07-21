@@ -60,6 +60,11 @@
                         </a>
                     </li>
                     <li class="dropdown">
+                        <a class="nav-link menu-title link-nav" href="{{route('dashboard.feedback.index')}}"><i data-feather="file-text"></i>
+                            <span>Обратная связь</span>
+                        </a>
+                    </li>
+                    <li class="dropdown">
                         <a class="nav-link menu-title link-nav" href="{{route('dashboard.words.index')}}"><i data-feather="file-text"></i>
                             <span>Словарь</span>
                         </a>

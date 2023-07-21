@@ -23,6 +23,7 @@ class ProductShowResource extends JsonResource
                 }
                 return $photos;
             }),
+            'icon'=> env('APP_URL').$this->icon,
             'brend_id'=> $this->brend_id,
             'category_id'=> $this->category_id,
             'name'=>$this->name,

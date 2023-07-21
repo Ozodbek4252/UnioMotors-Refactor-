@@ -3,6 +3,7 @@
 use App\Http\Controllers\Front\AboutController;
 use App\Http\Controllers\Front\BrendController;
 use App\Http\Controllers\Front\CategoryController;
+use App\Http\Controllers\Front\FeedbackController;
 use App\Http\Controllers\Front\HomeSelectController;
 use App\Http\Controllers\Front\ProductController;
 use App\Http\Controllers\Front\SixStepController;
@@ -32,6 +33,7 @@ Route::get('/product', [ProductController::class, 'index']);
 // Route::get('/product', [ProductController::class, 'filter']);
 Route::get('/product/{slug}', [ProductController::class, 'show']);
 Route::get('/brend', [BrendController::class, 'index']);
+Route::post('/feedback', [FeedbackController::class, 'store']);
 Route::get('/brend/{id}', [BrendController::class, 'show']);
 Route::get('/category', [CategoryController::class, 'index']);
 Route::get('/category/{id}', [CategoryController::class, 'show']);

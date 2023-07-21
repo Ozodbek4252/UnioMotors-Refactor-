@@ -13,6 +13,7 @@ class Product extends Model
         'brend_id',
         'category_id',
         'photos',
+        'icon',
         'name',
         'engine',
         'capacity_uz',
@@ -51,5 +52,10 @@ class Product extends Model
     public function datas()
     {
         return $this->hasMany(Data::class, 'product_id');
+    }
+
+    public function feedback()
+    {
+        return $this->hasMany(Feedback::class, 'product_id');
     }
 }
