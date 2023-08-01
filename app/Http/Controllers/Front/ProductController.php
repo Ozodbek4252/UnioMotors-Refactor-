@@ -29,7 +29,7 @@ class ProductController extends BaseController
 
     public function show($slug)
     {
-        return $this->successResponse('success', ProductShowResource::make(Product::with(['charactrics', 'datas'])->where('slug', $slug)->first()));
+        return $this->successResponse('success', ProductShowResource::make(Product::with(['charactrics', 'datas','categories'])->where('slug', $slug)->first()));
     }
 
     public function edit($id)

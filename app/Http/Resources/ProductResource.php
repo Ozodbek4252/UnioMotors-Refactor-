@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Resources;
-
+use App\Http\Resources\DataResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ProductResource extends JsonResource
@@ -42,6 +42,7 @@ class ProductResource extends JsonResource
             'discription_uz'=>$this->discription_uz,
             'discription_ru'=>$this->discription_ru,
             'discription_en'=>$this->discription_en,
+            'categories' => DataResource::collection($this->whenLoaded('categories')),
             'link'=>$this->link,
         ];
     }

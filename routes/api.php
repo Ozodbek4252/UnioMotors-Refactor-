@@ -35,8 +35,11 @@ Route::get('/product/{slug}', [ProductController::class, 'show']);
 Route::get('/brend', [BrendController::class, 'index']);
 Route::post('/feedback', [FeedbackController::class, 'store']);
 Route::get('/brend/{id}', [BrendController::class, 'show']);
+
 Route::get('/category', [CategoryController::class, 'index']);
+
 Route::get('/category/{id}', [CategoryController::class, 'show']);
+
 Route::get('/sixstep', [SixStepController::class, 'index']);
 Route::get('/about', [AboutController::class, 'index']);
 Route::get('/aboutdiscription', [AboutController::class, 'discription']);

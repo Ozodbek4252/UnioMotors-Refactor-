@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('photos');
             $table->string('icon')->nullable();
             $table->string('name');
+            $table->string('view')->default(0);
             $table->string('engine')->nullable();
             $table->string('capacity_uz')->nullable();
             $table->string('capacity_ru')->nullable();

@@ -45,6 +45,7 @@ class ProductShowResource extends JsonResource
             'discription_en'=>$this->discription_en,
             'link'=>$this->link,
             'data' => DataResource::collection($this->whenLoaded('datas')),
+            // 'category' => DataResource::collection($this->whenLoaded('categories')),
             'charactric' => CharactricResource::collection($this->whenLoaded('charactrics')),
         ];
     }

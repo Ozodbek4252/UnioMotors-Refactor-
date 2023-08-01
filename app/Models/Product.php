@@ -15,6 +15,7 @@ class Product extends Model
         'photos',
         'icon',
         'name',
+        'view',
         'engine',
         'capacity_uz',
         'capacity_ru',
