@@ -46,7 +46,6 @@ class ProductController extends BaseController
     
     public function store(StoreRequest $request)
     {
-        // dd($request->all());
         $result = (new ProductService())->store($request->validated());
         if($result['status']){
             return redirect()->route('dashboard.product.index')->with('success', $result['message']);

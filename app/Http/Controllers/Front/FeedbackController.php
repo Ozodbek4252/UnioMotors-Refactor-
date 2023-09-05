@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Front;
 
 use App\Http\Controllers\Controller;
 use App\Models\Feedback;
+use App\Models\Product;
 use Illuminate\Http\Request;
 
 class FeedbackController extends Controller
@@ -37,6 +38,25 @@ class FeedbackController extends Controller
     public function store(Request $request)
     {
         // dd($request->all());
+        $_POST['form_id'] = 1202414;
+        $_POST['hash'] = 'bc881aad9860b4ab1104ee5656108409';
+        $_POST['fields']['name_1'] = $request->name;
+        $_POST['fields']['891059_1']['1342039'] = $request->phone;
+        $_POST['fields']['note_2'] = 'Uniomotors / ' . Product::find($request->product_id)->name;
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, 'https://forms.amocrm.ru/queue/add');
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($_POST));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+            'Access-Control-Allow-Origin: http://uniomotors.uz',
+            'Access-Control-Allow-Methods: GET, POST, OPTIONS',
+            'Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With'
+        ));
+        $response = curl_exec($ch);
+        curl_close($ch);
+
         $request = $request->toArray();
         $result = Feedback::create($request);
         if ($result) {
