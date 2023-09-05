@@ -108,7 +108,7 @@
                         <thead>
                             <tr>
                                 <th scope="col">#</th>
-                                <th scope="col">Фото</th>
+                                {{-- <th scope="col">Фото</th> --}}
                                 <th scope="col">Название</th>
                                 <th scope="col" class="text-center">Действия</th>
                             </tr>
@@ -118,7 +118,7 @@
                             @foreach ($sliders as $key => $slider)
                                 <tr>
                                     <th scope="row">{{ ++$key }}</th>
-                                    <td><img src="{{ $slider->photo }}" alt="" style="height: 100px; width: 100px">
+                                    {{-- <td><img src="{{ $slider->photo }}" alt="" style="height: 100px; width: 100px"> --}}
                                     </td>
                                     <td>{{ $slider->name_ru }}</td>
                                     <td class="text-center">
@@ -156,7 +156,15 @@
                                                                             name="photo">
                                                                     </div>
                                                                 </div>
-
+                                                                <div class="row">
+                                                                    <div class="col-12">
+                                                                        <div class="mb-3">
+                                                                            <label class="form-label" for="exampleFormControlInput1">Ссылки</label>
+                                                                            <input class="form-control" id="exampleFormControlInput1" required type="text"
+                                                                                name="link" value="{{ $slider->link }}">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
                                                             </div>
                                                             <div class="row">
                                                                 <div class="col-4">

@@ -1,5 +1,5 @@
 <div>
-    <div class="row">
+    {{-- <div class="row">
         <div class="col-sm-12">
             <div class="card">
                 <div class="card-header pb-0">
@@ -33,7 +33,7 @@
                     </div>
             </div>
         </div>
-    </div>
+    </div> --}}
 
     {{--All Categories--}}
     <div class="row">
@@ -48,7 +48,7 @@
                         <thead>
                         <tr>
                             <th scope="col">#</th>
-                            <th scope="col">Ключ</th>
+                            {{-- <th scope="col">Ключ</th> --}}
                             <th scope="col">Текст RU</th>
                             <th scope="col">Текст UZ</th>
                             <th scope="col">Текст EN</th>
@@ -60,14 +60,14 @@
                         @foreach($words as $word)
                             <tr>
                                 <th scope="row">{{ $k }}</th>
-                                <td>
+                                {{-- <td>
                                     @if($edit != $word->id)
                                         {{ $word->key }}
                                     @else
                                         <input class="form-control" type="text" wire:model="key">
                                         @if($edit != 0) @error('key') <span class="error" style="color: red">{{ $message }}</span> @enderror @endif
                                     @endif
-                                </td>
+                                </td> --}}
                                 <td>
                                     @if($edit != $word->id)
                                         {{ $word->word_ru }}
@@ -99,9 +99,9 @@
                                             сохранить
                                         </button>
                                     @endif
-                                    <button class="btn btn-danger btn-xs" type="button" wire:click="destroy({{ $word->id }})">
+                                    {{-- <button class="btn btn-danger btn-xs" type="button" wire:click="destroy({{ $word->id }})">
                                         удалить
-                                    </button>
+                                    </button> --}}
                                 </td>
                             </tr>
                             @php($k++)
