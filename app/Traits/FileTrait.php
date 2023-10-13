@@ -5,6 +5,7 @@ namespace App\Traits;
 use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\File;
 
 trait FileTrait
 {
@@ -44,25 +45,26 @@ trait FileTrait
 
     public function fileSave($video, $directory)
     {
-        // dd('asd');
         $videoName = Str::random(10) . '.' . $video->getClientOriginalExtension();
 
         $video->move(public_path() . '/' . $directory . '/', $videoName);
         return '/' . $directory . '/' . $videoName;
     }
 
-    public function fileDelete($model, $id, $col_name)
+    /**
+     * Delete a file by its path.
+     *
+     * @param string $filePath The path of the file to delete.
+     * @return bool True if the file was successfully deleted, false otherwise.
+     */
+    function deleteFileByPath(string $filePath)
     {
-        if (!is_null($model)) {
-            $model = 'App\Models' . $model;
-            if (is_file(public_path($model::find($id)->$col_name))) {
-                unlink(public_path() . $model::find($id)->$col_name);
-            }
-        } else {
-            if (is_file(public_path($col_name))) {
-                unlink(public_path() . $col_name);
-            }
+        $absolutePath = public_path($filePath);
+
+        if (File::exists($absolutePath) && File::isFile($absolutePath)) {
+            return File::delete($absolutePath);
         }
-        return back();
+
+        return false;
     }
 }
