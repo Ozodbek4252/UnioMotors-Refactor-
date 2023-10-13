@@ -52,7 +52,7 @@ class DataController extends BaseController
             'discription_en' => 'nullable',
         ]);
         if (!empty($validatedData['photo'])) {
-            $validatedData['photo'] = $this->photoSave($validatedData['photo'], 'image/data');
+            $validatedData['photo'] = $this->saveImage($validatedData['photo'], 'image/data');
         }
         Data::create($validatedData);
 
@@ -73,7 +73,7 @@ class DataController extends BaseController
         ]);
         if (!empty($validatedData['photo'])) {
             $this->fileDelete('\Data', $id, 'photo');
-            $validatedData['photo'] = $this->photoSave($validatedData['photo'], 'image/data');
+            $validatedData['photo'] = $this->saveImage($validatedData['photo'], 'image/data');
         }
         Data::find($id)->update($validatedData);
 

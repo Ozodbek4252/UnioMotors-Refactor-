@@ -10,7 +10,7 @@ class CategoryService extends BaseService
     {
         try {
             if (!empty($request['photo'])) {
-                $request['photo'] = $this->photoSave($request['photo'], 'image/category');
+                $request['photo'] = $this->saveImage($request['photo'], 'image/category');
             }
             $category = Category::create($request);
             if ($category) {
@@ -30,7 +30,7 @@ class CategoryService extends BaseService
         try {
             if (!empty($request['photo'])) {
                 $this->fileDelete('\Category', $id, 'photo');
-                $request['photo'] = $this->photoSave($request['photo'], 'image/category');
+                $request['photo'] = $this->saveImage($request['photo'], 'image/category');
             }
             $category = Category::find($id)->update($request);
             if ($category) {

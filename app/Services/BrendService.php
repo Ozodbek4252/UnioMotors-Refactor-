@@ -10,7 +10,7 @@ class BrendService extends BaseService
     {
         try {
             if (!empty($request['photo'])) {
-                $request['photo'] = $this->photoSave($request['photo'], 'image/brend');
+                $request['photo'] = $this->saveImage($request['photo'], 'image/brend');
             }
             $brend = Brend::create($request);
             if ($brend) {
@@ -30,7 +30,7 @@ class BrendService extends BaseService
         try {
             if (!empty($request['photo'])) {
                 $this->fileDelete('\Brend', $id, 'photo');
-                $request['photo'] = $this->photoSave($request['photo'], 'image/brend');
+                $request['photo'] = $this->saveImage($request['photo'], 'image/brend');
             }
             $brend = Brend::find($id)->update($request);
             if ($brend) {

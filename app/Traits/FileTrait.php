@@ -4,23 +4,42 @@ namespace App\Traits;
 
 use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image;
+use Illuminate\Http\UploadedFile;
 
 trait FileTrait
 {
-    public function photoSave($photo, $directory)
+    /**
+     * Save an image to a specified directory and return its path.
+     *
+     * @param UploadedFile $photo The uploaded image file.
+     * @param string $directory The target directory to save the image in.
+     * @return string The path to the saved image.
+     */
+    public function saveImage($photo, $directory): string
     {
-        $height = Image::make($photo)->height();
-        $width = Image::make($photo)->width();
+        // Determine the file extension of the uploaded image.
+        $extension = $photo->getClientOriginalExtension();
 
-        $photoPath = '/' . $directory . '/' . Str::random(10) . '.webp';
+        // Generate a random filename with the same extension.
+        $filename = Str::random(10) . '.' . $extension;
 
-        if (file_exists(public_path($directory))){
-            Image::make($photo)->encode('webp', 90)->resize($width, $height)->save(public_path($photoPath));
-        }else{
-            mkdir(public_path($directory), 0777, true);
-            Image::make($photo)->encode('webp', 90)->resize($width, $height)->save(public_path($photoPath));
+        // Create the full path to the target directory.
+        $directoryPath = public_path($directory);
+
+        // Create the full path to the image file within the directory.
+        $photoPath = $directoryPath . '/' . $filename;
+
+        // Check if the target directory exists, and create it if not.
+        if (!file_exists($directoryPath)) {
+            mkdir($directoryPath, 0777, true);
         }
-        return $photoPath;
+
+        // Create an image instance from the uploaded photo and perform operations.
+        $image = Image::make($photo);
+        $image->encode($extension, 90)->resize($image->width(), $image->height())->save($photoPath);
+
+        // Return the path to the saved image, including the directory.
+        return '/' . $directory . '/' . $filename;
     }
 
     public function fileSave($video, $directory)
@@ -34,13 +53,13 @@ trait FileTrait
 
     public function fileDelete($model, $id, $col_name)
     {
-        if (!is_null($model)){
+        if (!is_null($model)) {
             $model = 'App\Models' . $model;
-            if (is_file(public_path($model::find($id)->$col_name))){
+            if (is_file(public_path($model::find($id)->$col_name))) {
                 unlink(public_path() . $model::find($id)->$col_name);
             }
-        }else{
-            if (is_file(public_path($col_name))){
+        } else {
+            if (is_file(public_path($col_name))) {
                 unlink(public_path() . $col_name);
             }
         }
