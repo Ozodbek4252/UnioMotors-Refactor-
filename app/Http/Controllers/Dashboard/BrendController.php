@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Dashboard;
 
-use App\Http\Requests\BrendStoreRequest;
-use App\Http\Requests\BrendUpdateRequest;
+use App\Http\Requests\BrendRequest;
 use App\Models\Brend;
 use App\Models\Product;
 use App\Services\BrendService;
+use Illuminate\Http\RedirectResponse;
 
 class BrendController extends BaseController
 {
@@ -36,10 +36,10 @@ class BrendController extends BaseController
     /**
      * Store a new Brend record.
      *
-     * @param BrendStoreRequest $request The validated request data.
-     * @return \Illuminate\Http\RedirectResponse A redirect response.
+     * @param BrendRequest $request The validated request data.
+     * @return RedirectResponse A redirect response.
      */
-    public function store(BrendStoreRequest $request)
+    public function store(BrendRequest $request): RedirectResponse
     {
         try {
             // Create a new instance of the BrendService.
@@ -56,18 +56,30 @@ class BrendController extends BaseController
         }
     }
 
-    public function update(BrendUpdateRequest $request, $id)
+    /**
+     * Update a Brend record.
+     *
+     * @param BrendRequest $request The validated request data.
+     * @param int $id The ID of the Brend record to update.
+     * @return RedirectResponse A redirect response with a success or error message.
+     */
+    public function update(BrendRequest $request, $id): RedirectResponse
     {
-        $result = (new BrendService())->update($request->validated(), $id);
-        if ($result['status']) {
-            return redirect()->route('dashboard.brend.index')->with('success', $result['message']);
+        $brendService = new BrendService();
+
+        try {
+            $brendService->update($request->validated(), $id);
+            $message = 'Data updated successfully.';
+        } catch (\Exception $e) {
+            $message = $e->getMessage();
         }
-        return redirect()->route('dashboard.brend.index')->with('error', $result['message']);
+
+        return redirect()->route('dashboard.brend.index')->with('message', $message);
     }
 
     public function destroy($id)
     {
-        $this->fileDelete('\Brend', $id, 'photo');
+        $this->deleteFile('\Brend', $id, 'photo');
         Brend::find($id)->delete();
         foreach (Product::where('brend_id', $id)->get() as $prod) {
             $this->productController->destroy($prod->id);

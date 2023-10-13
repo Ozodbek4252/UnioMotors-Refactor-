@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class BrendStoreRequest extends FormRequest
+class BrendRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,8 +23,13 @@ class BrendStoreRequest extends FormRequest
      */
     public function rules()
     {
+        if ($this->method == 'put') {
+            $photo = 'nullable';
+        } else {
+            $photo = 'required';
+        }
         return [
-            'photo' => 'required|image|mimes:jpeg,png,jpg,gif|max:20480',
+            'photo' => $photo . '|image|mimes:jpeg,png,jpg,gif|max:20480',
             'name' => 'string|max:255',
         ];
     }
