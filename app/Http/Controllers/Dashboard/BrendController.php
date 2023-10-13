@@ -2,24 +2,32 @@
 
 namespace App\Http\Controllers\Dashboard;
 
-use App\Http\Controllers\Controller;
 use App\Http\Requests\BrendStoreRequest;
 use App\Http\Requests\BrendUpdateRequest;
 use App\Models\Brend;
 use App\Models\Product;
 use App\Services\BrendService;
-use Illuminate\Http\Request;
 
 class BrendController extends BaseController
 {
-    private $productController;
-    public function __construct(ProductController $productController)
+    /**
+     * Create a new instance of BrendController.
+     *
+     * @param ProductController $productController
+     */
+    public function __construct(private ProductController $productController)
     {
-        $this->productController = $productController;
     }
+
+    /**
+     * Display a list of Brends in descending order by ID.
+     *
+     * @return \Illuminate\View\View
+     */
     public function index()
     {
         $brends = Brend::orderBy('id', 'desc')->get();
+
         return view('dashboard.brend.crud', [
             'brends' => $brends
         ]);
