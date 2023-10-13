@@ -3,25 +3,31 @@
 namespace App\Services;
 
 use App\Models\Category;
+use \Exception;
 
 class CategoryService extends BaseService
 {
-    public function store($request)
+    /**
+     * Store a new Category record.
+     *
+     * @param array $data The data to create the Category record.
+     * @return void
+     * @throws Exception If an error occurs during the operation.
+     */
+    public function store(array $data): void
     {
         try {
-            if (!empty($request['photo'])) {
-                $request['photo'] = $this->saveImage($request['photo'], 'image/category');
+            if (!empty($data['photo'])) {
+                $data['photo'] = $this->saveImage($data['photo'], 'image/category');
             }
-            $category = Category::create($request);
-            if ($category) {
-                return ['status' => true, 'message' => 'Data uploaded successfully.'];
+
+            $category = Category::create($data);
+
+            if (!$category) {
+                throw new Exception('Category not created.');
             }
-            return ['status' => false, 'message' => 'Not created!'];
-        } catch (\Exception $e) {
-            return [
-                'status' => false,
-                'message' => $e->getMessage(),
-            ];
+        } catch (Exception $e) {
+            throw $e;
         }
     }
 

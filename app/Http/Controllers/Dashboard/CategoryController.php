@@ -2,22 +2,23 @@
 
 namespace App\Http\Controllers\Dashboard;
 
-use App\Http\Requests\Category\StoreRequest;
+use App\Http\Requests\CategoryRequest;
 use App\Http\Requests\Category\UpdateRequest;
 use App\Models\Category;
 use App\Models\Product;
 use App\Services\CategoryService;
-use App\Services\ProductService;
+use \Exception;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 
 class CategoryController extends BaseController
 {
     /**
-     * Create a new instance of ProductService.
+     * Create a new instance of CategoryService.
      *
-     * @param ProductService $service The ProductService instance.
+     * @param CategoryService $service The CategoryService instance.
      */
-    public function __construct(private ProductService $service)
+    public function __construct(private CategoryService $service)
     {
     }
 
@@ -34,13 +35,23 @@ class CategoryController extends BaseController
         ]);
     }
 
-    public function store(StoreRequest $request)
+    /**
+     * Store a new Category record.
+     *
+     * @param CategoryRequest $request The validated request data.
+     * @return RedirectResponse A redirect response.
+     */
+    public function store(CategoryRequest $request): RedirectResponse
     {
-        $result = (new CategoryService())->store($request->validated());
-        if ($result['status']) {
-            return redirect()->route('dashboard.category.index')->with('success', $result['message']);
+        try {
+            $this->service->store($request->validated());
+
+            return redirect()->route('dashboard.category.index')
+                ->with('success', 'Category uploaded successfully.');
+        } catch (Exception $e) {
+            return redirect()->route('dashboard.category.index')
+                ->with('error', $e->getMessage());
         }
-        return redirect()->route('dashboard.category.index')->with('error', $result['message']);
     }
 
     public function update(UpdateRequest $request, $id)
