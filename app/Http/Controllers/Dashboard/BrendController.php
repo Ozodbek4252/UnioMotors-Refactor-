@@ -4,37 +4,37 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Requests\BrendRequest;
 use App\Models\Brend;
-use App\Models\Product;
 use App\Services\BrendService;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 
 class BrendController extends BaseController
 {
     /**
-     * Create a new instance of BrendController.
+     * Create a new instance of BrandController.
      *
-     * @param ProductController $productController
+     * @param BrendService $service The BrandService instance.
      */
-    public function __construct(private ProductController $productController)
+    public function __construct(private BrendService $service)
     {
     }
 
     /**
-     * Display a list of Brends in descending order by ID.
+     * Display a list of Brands in descending order by ID.
      *
-     * @return \Illuminate\View\View
+     * @return View
      */
-    public function index()
+    public function index(): View
     {
-        $brends = Brend::orderBy('id', 'desc')->get();
+        $brands = Brend::orderBy('id', 'desc')->get();
 
         return view('dashboard.brend.crud', [
-            'brends' => $brends
+            'brends' => $brands
         ]);
     }
 
     /**
-     * Store a new Brend record.
+     * Store a new Brand record.
      *
      * @param BrendRequest $request The validated request data.
      * @return RedirectResponse A redirect response.
@@ -42,11 +42,8 @@ class BrendController extends BaseController
     public function store(BrendRequest $request): RedirectResponse
     {
         try {
-            // Create a new instance of the BrendService.
-            $brendService = new BrendService();
-
             // Store the validated data using the service.
-            $brendService->store($request->validated());
+            $this->service->store($request->validated());
 
             return redirect()->route('dashboard.brend.index')
                 ->with('success', 'Data uploaded successfully.');
@@ -57,18 +54,16 @@ class BrendController extends BaseController
     }
 
     /**
-     * Update a Brend record.
+     * Update a Brand record.
      *
      * @param BrendRequest $request The validated request data.
-     * @param int $id The ID of the Brend record to update.
+     * @param int $id The ID of the Brand record to update.
      * @return RedirectResponse A redirect response with a success or error message.
      */
     public function update(BrendRequest $request, $id): RedirectResponse
     {
-        $brendService = new BrendService();
-
         try {
-            $brendService->update($request->validated(), $id);
+            $this->service->update($request->validated(), $id);
             $message = 'Data updated successfully.';
         } catch (\Exception $e) {
             $message = $e->getMessage();
@@ -77,13 +72,20 @@ class BrendController extends BaseController
         return redirect()->route('dashboard.brend.index')->with('message', $message);
     }
 
-    public function destroy($id)
+    /**
+     * Delete a brand and its associated products.
+     *
+     * @param int $id The ID of the brand to delete.
+     *
+     * @return RedirectResponse
+     */
+    public function destroy(int $id): RedirectResponse
     {
-        $this->deleteFile('\Brend', $id, 'photo');
-        Brend::find($id)->delete();
-        foreach (Product::where('brend_id', $id)->get() as $prod) {
-            $this->productController->destroy($prod->id);
+        try {
+            $this->service->delete($id);
+            return back()->with('success', 'Brand deleted.');
+        } catch (\Exception $e) {
+            return back()->with('error', $e->getMessage());
         }
-        return back()->with('success', 'Data deleted.');
     }
 }
