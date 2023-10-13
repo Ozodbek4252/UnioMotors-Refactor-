@@ -21,23 +21,37 @@ class BrendController extends BaseController
     {
         $brends = Brend::orderBy('id', 'desc')->get();
         return view('dashboard.brend.crud', [
-            'brends'=>$brends
+            'brends' => $brends
         ]);
     }
 
+    /**
+     * Store a new Brend record.
+     *
+     * @param BrendStoreRequest $request The validated request data.
+     * @return \Illuminate\Http\RedirectResponse A redirect response.
+     */
     public function store(BrendStoreRequest $request)
     {
-        $result = (new BrendService())->store($request->validated());
-        if($result['status']){
-            return redirect()->route('dashboard.brend.index')->with('success', $result['message']);
+        try {
+            // Create a new instance of the BrendService.
+            $brendService = new BrendService();
+
+            // Store the validated data using the service.
+            $brendService->store($request->validated());
+
+            return redirect()->route('dashboard.brend.index')
+                ->with('success', 'Data uploaded successfully.');
+        } catch (\Exception $e) {
+            return redirect()->route('dashboard.brend.index')
+                ->with('error', $e->getMessage());
         }
-        return redirect()->route('dashboard.brend.index')->with('error', $result['message']);
     }
 
     public function update(BrendUpdateRequest $request, $id)
     {
         $result = (new BrendService())->update($request->validated(), $id);
-        if($result['status']){
+        if ($result['status']) {
             return redirect()->route('dashboard.brend.index')->with('success', $result['message']);
         }
         return redirect()->route('dashboard.brend.index')->with('error', $result['message']);
