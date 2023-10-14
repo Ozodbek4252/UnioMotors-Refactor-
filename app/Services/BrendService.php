@@ -18,7 +18,7 @@ class BrendService extends BaseService
      * @return Brend|null The found Brand record or null if not found.
      * @throws ModelNotFoundException If the Brand record is not found.
      */
-    public static function getBrand(int $id)
+    public static function getBrand(int $id): Brend|null
     {
         try {
             return Brend::findOrFail($id);

@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Requests\CategoryRequest;
-use App\Http\Requests\Category\UpdateRequest;
 use App\Models\Category;
 use App\Models\Product;
 use App\Services\CategoryService;
@@ -54,13 +53,23 @@ class CategoryController extends BaseController
         }
     }
 
-    public function update(UpdateRequest $request, $id)
+    /**
+     * Update a Category record.
+     *
+     * @param CategoryRequest $request The validated request data.
+     * @param int $id The ID of the Category record to update.
+     * @return RedirectResponse A redirect response with a success or error message.
+     */
+    public function update(CategoryRequest $request, $id): RedirectResponse
     {
-        $result = (new CategoryService())->update($request->validated(), $id);
-        if ($result['status']) {
-            return redirect()->route('dashboard.category.index')->with('success', $result['message']);
+        try {
+            $this->service->update($request->validated(), $id);
+            $message = 'Data updated successfully.';
+        } catch (\Exception $e) {
+            $message = $e->getMessage();
         }
-        return redirect()->route('dashboard.category.index')->with('error', $result['message']);
+
+        return redirect()->route('dashboard.category.index')->with('message', $message);
     }
 
     public function destroy($id)
