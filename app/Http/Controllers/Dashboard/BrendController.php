@@ -11,7 +11,7 @@ use Illuminate\Http\RedirectResponse;
 class BrendController extends BaseController
 {
     /**
-     * Create a new instance of BrandController.
+     * Create a new instance of BrandService.
      *
      * @param BrendService $service The BrandService instance.
      */
