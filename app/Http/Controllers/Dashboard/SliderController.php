@@ -71,11 +71,19 @@ class SliderController extends BaseController
         return redirect()->route('dashboard.slider.index')->with('message', $message);
     }
 
-
-    public function destroy($id)
+    /**
+     * Delete a slider and its associated products.
+     *
+     * @param int $id The ID of the slider to delete.
+     * @return RedirectResponse
+     */
+    public function destroy(int $id): RedirectResponse
     {
-        $this->fileDelete('\Slider', $id, 'photo');
-        Slider::find($id)->delete();
-        return back()->with('success', 'Data deleted.');
+        try {
+            $this->service->delete($id);
+            return back()->with('success', 'Slider deleted.');
+        } catch (\Exception $e) {
+            return back()->with('error', $e->getMessage());
+        }
     }
 }

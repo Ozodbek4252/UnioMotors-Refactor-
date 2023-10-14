@@ -75,4 +75,34 @@ class SliderService extends BaseService
             throw new Exception("Failed to update Slider: " . $e->getMessage());
         }
     }
+
+    /**
+     * Delete a slider and its associated photo.
+     *
+     * This method deletes a slider by its ID and ensures the associated photo is also removed.
+     *
+     * @param int $id The ID of the slider to delete.
+     * @throws Exception If there is an error during deletion.
+     * @return void
+     */
+    public function delete(int $id): void
+    {
+        try {
+            // Retrieve the slider by ID
+            $slider = self::getSlider($id);
+
+            if ($slider === null) {
+                // Handle the case where the slider is not found (e.g., return an error response).
+                return;
+            }
+
+            // Delete the slider's associated photo file
+            $this->deleteFileByPath($slider->photo);
+
+            // Delete the slider itself
+            $slider->delete();
+        } catch (Exception $e) {
+            throw new Exception("Failed to delete slider: " . $e->getMessage());
+        }
+    }
 }
