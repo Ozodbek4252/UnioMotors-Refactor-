@@ -76,7 +76,6 @@ class BrendController extends BaseController
      * Delete a brand and its associated products.
      *
      * @param int $id The ID of the brand to delete.
-     *
      * @return RedirectResponse
      */
     public function destroy(int $id): RedirectResponse

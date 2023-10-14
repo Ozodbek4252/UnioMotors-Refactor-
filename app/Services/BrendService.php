@@ -74,7 +74,6 @@ class BrendService extends BaseService
      * Delete a brand and its associated products.
      *
      * @param int $id The ID of the brand to delete.
-     *
      * @return void
      */
     public function delete($id)

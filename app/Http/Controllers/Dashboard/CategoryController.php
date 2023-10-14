@@ -72,13 +72,19 @@ class CategoryController extends BaseController
         return redirect()->route('dashboard.category.index')->with('message', $message);
     }
 
-    public function destroy($id)
+    /**
+     * Delete a category and its associated products.
+     *
+     * @param int $id The ID of the category to delete.
+     * @return RedirectResponse
+     */
+    public function destroy(int $id): RedirectResponse
     {
-        $this->fileDelete('\Category', $id, 'photo');
-        Category::find($id)->delete();
-        foreach (Product::where('category_id', $id)->get() as $prod) {
-            $this->productController->destroy($prod->id);
+        try {
+            $this->service->delete($id);
+            return back()->with('success', 'Category deleted.');
+        } catch (\Exception $e) {
+            return back()->with('error', $e->getMessage());
         }
-        return back()->with('success', 'Data deleted.');
     }
 }

@@ -70,4 +70,45 @@ class CategoryService extends BaseService
             throw new Exception("Failed to update Category: " . $e->getMessage());
         }
     }
+
+    /**
+     * Delete a category and its associated products.
+     *
+     * @param int $id The ID of the category to delete.
+     * @return void
+     */
+    public function delete($id): void
+    {
+        // Step 1: Retrieve the category by ID
+        $category = self::getCategory($id);
+
+
+        // Step 2: Delete the category's associated photo file
+        $this->deleteFileByPath($category->photo);
+
+        // Step 3: Delete all products associated with the category
+        $this->deleteCategoryProducts($id);
+
+        // Step 4: Delete the category itself
+        $category->delete();
+    }
+
+    /**
+     * Delete all products associated with a category.
+     *
+     * @param int $categoryId The ID of the category.
+     *
+     * @return void
+     */
+    private function deleteCategoryProducts($categoryId)
+    {
+        $products = ProductService::getProductsByCategoryId($categoryId);
+
+        if ($products) {
+            foreach ($products as $product) {
+                $productService = new ProductService();
+                $productService->delete($product->id);
+            }
+        }
+    }
 }
