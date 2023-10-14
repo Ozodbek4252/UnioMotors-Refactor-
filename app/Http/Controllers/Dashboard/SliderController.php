@@ -6,6 +6,7 @@ use App\Http\Requests\SliderRequest;
 use App\Http\Requests\SliderUpdateRequest;
 use App\Models\Slider;
 use App\Services\SliderService;
+use Illuminate\Http\RedirectResponse;
 
 class SliderController extends BaseController
 {
@@ -31,13 +32,24 @@ class SliderController extends BaseController
         ]);
     }
 
-    public function store(SliderRequest $request)
+    /**
+     * Store a new Slider record.
+     *
+     * @param SliderRequest $request The validated request data.
+     * @return RedirectResponse A redirect response.
+     */
+    public function store(SliderRequest $request): RedirectResponse
     {
-        $result = (new SliderService())->store($request->validated(), $request->file('photo')->getClientOriginalExtension());
-        if ($result['status']) {
-            return redirect()->route('dashboard.slider.index')->with('success', $result['message']);
+        try {
+            // Store the validated data using the service.
+            $this->service->store($request->validated());
+
+            return redirect()->route('dashboard.slider.index')
+                ->with('success', 'Data uploaded successfully.');
+        } catch (\Exception $e) {
+            return redirect()->route('dashboard.slider.index')
+                ->with('error', $e->getMessage());
         }
-        return redirect()->route('dashboard.slider.index')->with('error', $result['message']);
     }
 
     public function update(SliderUpdateRequest $request, $id)

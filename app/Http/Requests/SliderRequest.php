@@ -23,9 +23,15 @@ class SliderRequest extends FormRequest
      */
     public function rules()
     {
+        if ($this->method == 'put') {
+            $photo = 'nullable';
+        } else {
+            $photo = 'required';
+        }
+
         return [
-            'photo' => 'required|mimes:jpeg,png,jpg,gif,mp4,avi,mov,wmv|max:20480',
-            'link' => 'string|max:255',
+            'photo' => $photo . '|mimes:jpeg,png,jpg,gif,mp4,avi,mov,wmv|max:20480',
+            'link' => 'string|url|max:255',
             'name_uz' => 'required|string|max:255',
             'name_ru' => 'required|string|max:255',
             'name_en' => 'required|string|max:255',
