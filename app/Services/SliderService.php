@@ -4,9 +4,26 @@ namespace App\Services;
 
 use App\Models\Slider;
 use Exception;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class SliderService extends BaseService
 {
+    /**
+     * Retrieve a Slider record by its ID.
+     *
+     * @param int $id The ID of the Slider record to retrieve.
+     * @return Slider|null The found Slider record or null if not found.
+     * @throws ModelNotFoundException If the Slider record is not found.
+     */
+    public static function getSlider(int $id): Slider|null
+    {
+        try {
+            return Slider::findOrFail($id);
+        } catch (ModelNotFoundException $e) {
+            return null; // Return null if the Slider record is not found.
+        }
+    }
+
     /**
      * Store a new Slider record with an uploaded image.
      *
@@ -33,26 +50,29 @@ class SliderService extends BaseService
         }
     }
 
-    public function update($request, $id, $photo_type)
+    /**
+     * Update a Slider record with new data and optional photo.
+     *
+     * @param array $requestData The validated request data.
+     * @param int $id The ID of the Slider record to update.
+     * @throws \Exception If an error occurs during the update.
+     */
+    public function update(array $requestData, int $id)
     {
+        $slider = self::getSlider($id);
+
         try {
-            if (!empty($request['photo'])) {
-                $this->fileDelete('\Slider', $id, 'photo');
-                $request['photo'] = $this->fileSave($request['photo'], 'image/slider');
+            if (isset($requestData['photo'])) {
+                // Get the file extension from the uploaded photo and store it in the 'type' field.
+                $requestData['type'] = $requestData['photo']->getClientOriginalExtension();
+
+                $this->deleteFileByPath($slider->photo);
+                $requestData['photo'] = $this->saveImage($requestData['photo'], 'image/slider');
             }
-            if (!empty($request['photo'])) {
-                $request['type'] = $photo_type->getClientOriginalExtension();
-            }
-            $slider = Slider::find($id)->update($request);
-            if ($slider) {
-                return ['status' => true, 'message' => 'Data uploaded successfully.'];
-            }
-            return ['status' => false, 'message' => 'Not created!'];
-        } catch (\Exception $e) {
-            return [
-                'status' => false,
-                'message' => $e->getMessage(),
-            ];
+
+            $slider->update($requestData);
+        } catch (Exception $e) {
+            throw new Exception("Failed to update Slider: " . $e->getMessage());
         }
     }
 }

@@ -50,21 +50,21 @@ class BrendService extends BaseService
     /**
      * Update a Brand record with new data and optional photo.
      *
-     * @param array $request The validated request data.
+     * @param array $requestData The validated request data.
      * @param int $id The ID of the Brand record to update.
      * @throws \Exception If an error occurs during the update.
      */
-    public function update(array $request, int $id)
+    public function update(array $requestData, int $id)
     {
         $brand = self::getBrand($id);
 
         try {
-            if (isset($request['photo'])) {
+            if (isset($requestData['photo'])) {
                 $this->deleteFileByPath($brand->photo);
-                $request['photo'] = $this->saveImage($request['photo'], 'image/brand');
+                $requestData['photo'] = $this->saveImage($requestData['photo'], 'image/brand');
             }
 
-            $brand->update($request);
+            $brand->update($requestData);
         } catch (Exception $e) {
             throw new Exception("Failed to update Brand: " . $e->getMessage());
         }

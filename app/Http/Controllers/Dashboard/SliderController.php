@@ -52,14 +52,25 @@ class SliderController extends BaseController
         }
     }
 
-    public function update(SliderUpdateRequest $request, $id)
+    /**
+     * Update a Slider record.
+     *
+     * @param SliderRequest $request The validated request data.
+     * @param int $id The ID of the Slider record to update.
+     * @return RedirectResponse A redirect response with a success or error message.
+     */
+    public function update(SliderRequest $request, $id): RedirectResponse
     {
-        $result = (new SliderService())->update($request->validated(), $id, $request->file('photo'));
-        if ($result['status']) {
-            return redirect()->route('dashboard.slider.index')->with('success', $result['message']);
+        try {
+            $this->service->update($request->validated(), $id);
+            $message = 'Data updated successfully.';
+        } catch (\Exception $e) {
+            $message = $e->getMessage();
         }
-        return redirect()->route('dashboard.slider.index')->with('error', $result['message']);
+
+        return redirect()->route('dashboard.slider.index')->with('message', $message);
     }
+
 
     public function destroy($id)
     {

@@ -23,7 +23,7 @@ class SliderRequest extends FormRequest
      */
     public function rules()
     {
-        if ($this->method == 'put') {
+        if ($this->method() == 'PUT') {
             $photo = 'nullable';
         } else {
             $photo = 'required';
